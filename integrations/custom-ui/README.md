@@ -18,11 +18,12 @@ npm dependencies (contained in the `package.json`):
 
 Update the projectId, location, agentId in the config.js file from the agent URL.
 
-https://dialogflow.cloud.google.com/cx/projects//locations//agents//flows/
+`Ex: https://dialogflow.cloud.google.com/cx/projects/--------/locations/----------/agents/--------/flows/`
  
 ### Running the server
 
 Start with `node app.js`
+
 Run the server (listening on port 8080)
 http://localhost:8080/
 
