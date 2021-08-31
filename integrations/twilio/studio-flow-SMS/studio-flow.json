@@ -1,0 +1,305 @@
+{
+    "description": "IVR",
+    "states": [
+      {
+        "name": "Trigger",
+        "type": "trigger",
+        "transitions": [
+          {
+            "next": "check_for_language",
+            "event": "incomingMessage"
+          },
+          {
+            "event": "incomingCall"
+          },
+          {
+            "event": "incomingRequest"
+          }
+        ],
+        "properties": {
+          "offset": {
+            "x": 490,
+            "y": -370
+          }
+        }
+      },
+      {
+        "name": "get_dialogflow_response",
+        "type": "make-http-request",
+        "transitions": [
+          {
+            "next": "set_send_response",
+            "event": "success"
+          },
+          {
+            "event": "failed"
+          }
+        ],
+        "properties": {
+          "offset": {
+            "x": 420,
+            "y": 690
+          },
+          "method": "POST",
+          "content_type": "application/json;charset=utf-8",
+          "body": "{\"text\":\"'{{flow.variables.msg}}\",\n\"id\":\" {{flow.variables.id}}\",\"lang\":\"{{flow.variables.lang}}\"}",
+          "url": "https://7c17-103-217-212-100.ngrok.io/webhook"
+        }
+      },
+      {
+        "name": "send_reply_user",
+        "type": "send-and-wait-for-reply",
+        "transitions": [
+          {
+            "next": "split_by_first_msg",
+            "event": "incomingMessage"
+          },
+          {
+            "event": "timeout"
+          },
+          {
+            "event": "deliveryFailure"
+          }
+        ],
+        "properties": {
+          "offset": {
+            "x": 270,
+            "y": 1050
+          },
+          "service": "{{trigger.message.InstanceSid}}",
+          "channel": "{{trigger.message.ChannelSid}}",
+          "from": "{{flow.channel.address}}",
+          "body": "{{flow.variables.text}}",
+          "timeout": "3600"
+        }
+      },
+      {
+        "name": "split_by_first_msg",
+        "type": "split-based-on",
+        "transitions": [
+          {
+            "next": "set_flow_msg",
+            "event": "noMatch"
+          },
+          {
+            "next": "set_first_msg",
+            "event": "match",
+            "conditions": [
+              {
+                "friendly_name": "If value",
+                "arguments": [
+                  "{{widgets.send_reply_user.inbound.Body}}"
+                ],
+                "type": "is_blank",
+                "value": "Is Blank"
+              }
+            ]
+          }
+        ],
+        "properties": {
+          "input": "{{widgets.send_reply_user.inbound.Body}}",
+          "offset": {
+            "x": 430,
+            "y": 370
+          }
+        }
+      },
+      {
+        "name": "set_first_msg",
+        "type": "set-variables",
+        "transitions": [
+          {
+            "next": "get_dialogflow_response",
+            "event": "next"
+          }
+        ],
+        "properties": {
+          "variables": [
+            {
+              "value": "{{trigger.message.Body}}",
+              "key": "msg"
+            },
+            {
+              "value": "0",
+              "key": "id"
+            }
+          ],
+          "offset": {
+            "x": 980,
+            "y": 580
+          }
+        }
+      },
+      {
+        "name": "set_flow_msg",
+        "type": "set-variables",
+        "transitions": [
+          {
+            "next": "get_dialogflow_response",
+            "event": "next"
+          }
+        ],
+        "properties": {
+          "variables": [
+            {
+              "value": "{{widgets.send_reply_user.inbound.Body}}",
+              "key": "msg"
+            },
+            {
+              "value": "{{flow.variables.session_id}}",
+              "key": "id"
+            }
+          ],
+          "offset": {
+            "x": -140,
+            "y": 570
+          }
+        }
+      },
+      {
+        "name": "set_send_response",
+        "type": "set-variables",
+        "transitions": [
+          {
+            "next": "send_reply_user",
+            "event": "next"
+          }
+        ],
+        "properties": {
+          "variables": [
+            {
+              "value": "{{widgets.get_dialogflow_response.parsed.msg}}",
+              "key": "text"
+            },
+            {
+              "value": "{{widgets.get_dialogflow_response.parsed.id}}",
+              "key": "session_id"
+            }
+          ],
+          "offset": {
+            "x": 740,
+            "y": 920
+          }
+        }
+      },
+      {
+        "name": "check_for_language",
+        "type": "send-and-wait-for-reply",
+        "transitions": [
+          {
+            "next": "split_based_on_language",
+            "event": "incomingMessage"
+          },
+          {
+            "event": "timeout"
+          },
+          {
+            "event": "deliveryFailure"
+          }
+        ],
+        "properties": {
+          "offset": {
+            "x": 490,
+            "y": -200
+          },
+          "service": "{{trigger.message.InstanceSid}}",
+          "channel": "{{trigger.message.ChannelSid}}",
+          "from": "{{flow.channel.address}}",
+          "body": "Enter 1 for English\nEnter 2 for Spanish",
+          "timeout": "3600"
+        }
+      },
+      {
+        "name": "set_en_lang",
+        "type": "set-variables",
+        "transitions": [
+          {
+            "next": "split_by_first_msg",
+            "event": "next"
+          }
+        ],
+        "properties": {
+          "variables": [
+            {
+              "value": "en",
+              "key": "lang"
+            }
+          ],
+          "offset": {
+            "x": -30,
+            "y": 80
+          }
+        }
+      },
+      {
+        "name": "split_based_on_language",
+        "type": "split-based-on",
+        "transitions": [
+          {
+            "event": "noMatch"
+          },
+          {
+            "next": "set_en_lang",
+            "event": "match",
+            "conditions": [
+              {
+                "friendly_name": "If value equal_to 1",
+                "arguments": [
+                  "{{widgets.check_for_language.inbound.Body}}"
+                ],
+                "type": "equal_to",
+                "value": "1"
+              }
+            ]
+          },
+          {
+            "next": "set_es_lang",
+            "event": "match",
+            "conditions": [
+              {
+                "friendly_name": "If value equal_to 2",
+                "arguments": [
+                  "{{widgets.check_for_language.inbound.Body}}"
+                ],
+                "type": "equal_to",
+                "value": "2"
+              }
+            ]
+          }
+        ],
+        "properties": {
+          "input": "{{widgets.check_for_language.inbound.Body}}",
+          "offset": {
+            "x": 440,
+            "y": 40
+          }
+        }
+      },
+      {
+        "name": "set_es_lang",
+        "type": "set-variables",
+        "transitions": [
+          {
+            "next": "split_by_first_msg",
+            "event": "next"
+          }
+        ],
+        "properties": {
+          "variables": [
+            {
+              "value": "es",
+              "key": "lang"
+            }
+          ],
+          "offset": {
+            "x": 1080,
+            "y": 60
+          }
+        }
+      }
+    ],
+    "initial_state": "Trigger",
+    "flags": {
+      "allow_concurrent_calls": true
+    }
+  }
