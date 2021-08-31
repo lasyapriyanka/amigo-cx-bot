@@ -1,0 +1,10 @@
+.background{
+    background: url("../../assets/BG.jpg"); 
+    background-repeat: no-repeat;
+    background-attachment: fixed;  
+    background-size: cover;
+    height: 100vh;
+}
+.card{
+    background-color: #ffffff52;
+}
