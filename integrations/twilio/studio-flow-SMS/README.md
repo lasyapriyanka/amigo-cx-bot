@@ -39,35 +39,42 @@ Access the Twilio console to get a `<TWILIO-PHONE-NUMBER>`.
 ### Basic
 
 ### Studio flow import JSON
-1. Create a new flow in Twilio Studio by importing the `studio-flow.json`
+Create a new flow in Twilio Studio by importing the `studio-flow.json`
+[Twilio Studio Import JSON](https://www.twilio.com/docs/studio/user-guide#importing-flow-data)
 
 ### Update the URL in widget
 
-2. Update the ngrok URL with `/webhook` route in the `get_dialogflow_response` widget 
+Update the ngrok URL with `/webhook` route in the `get_dialogflow_response` widget 
 
 Example: https://7c17-103-217-212-100.ngrok.io/webhook
 
-
 Note: Point your webhook to your AppEngine instance if you have deployed in app engine.
 
-3. Publish the flow to update the new changes.
+Publish the flow to update the new changes.
 
-### Whatsapp test 
+## Testing
+### WhatsApp Sandbox test 
 
 Follow the instructions to setup a whastapp sandbox integration and you should be able to test the integration on Whatsapp
+https://www.twilio.com/docs/whatsapp/sandbox
+
+`Trigger the bot by: Hi`
 
 ### SMS test
 
 Access the twilio console, under the `Phone Numbers > Manage > Active numbers` update the `A MESSAGE COMES IN` to point out to the studio flow that you have just created. 
 
+Follow these instructions to add your number to the verified list
+https://support.twilio.com/hc/en-us/articles/223180048-Adding-a-Verified-Phone-Number-or-Caller-ID-with-Twilio
 
-### Mutliple languages
 
-User: Hi
+### Multiple languages Conversation Flow
 
-Agent: Enter 1 for English
-       Enter 2 for Spanish
+`User:` Hi
 
-User: 1 / 2
+`Agent:` Enter 1 for English
+         Enter 2 for Spanish
 
-Agent: Welcome to amigo bot / Hola
+`User:` 1 / 2
+
+`Agent:` Welcome to amigo bot / Hola
