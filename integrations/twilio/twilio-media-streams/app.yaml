@@ -1,0 +1,16 @@
+runtime: nodejs
+instance_class: B4
+service: 'twilio-voice-en'
+manual_scaling:
+  instances: 1
+env: flex
+network:
+  session_affinity: true
+
+env_variables:
+  TWILIO_ACCOUNT_SID: "ACd8365a5384547b9459e541de43640ee4"
+  TWILIO_AUTH_TOKEN: "75c0b6e9d36cf8648109745ee17e5a03"
+  DIALOGFLOW_PROJECT_ID: "dolex-ccai"
+  END_OF_INTERACTION_URL: ""
+  DIALOGFLOW_STARTING_EVENT_NAME: "location_event"
+  LANGUAGE_CODE: "en-US"
