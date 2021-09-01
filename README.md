@@ -1,5 +1,5 @@
 # amigo-cx-bot
-This repository consists of CX agent export and three CX integrations[A Custom UI, [Twilio Studio Integration](https://www.twilio.com/studio), [Twilio Media Streams](https://www.twilio.com/docs/voice/tutorials/consume-real-time-media-stream-using-websockets-python-and-flask) via WebSockets.]
+This repository consists of CX agent export and three CX integrations [A Custom UI, [Twilio Studio Integration](https://www.twilio.com/studio), [Twilio Media Streams](https://www.twilio.com/docs/voice/tutorials/consume-real-time-media-stream-using-websockets-python-and-flask) via WebSockets]
 
 ## Description
 
