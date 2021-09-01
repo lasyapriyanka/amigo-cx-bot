@@ -36,8 +36,6 @@ https://YOUR-APPENGINE-INSTANCE.appspot.com/
 ### Configure using the Console
 Access the Twilio console to get a `<TWILIO-PHONE-NUMBER>`.
 
-### Basic
-
 ### Studio flow import JSON
 Create a new flow in Twilio Studio by importing the `studio-flow.json`
 [Twilio Studio Import JSON](https://www.twilio.com/docs/studio/user-guide#importing-flow-data)
