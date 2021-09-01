@@ -28,4 +28,10 @@ Run the server (listening on port 8080)
 
 http://localhost:8080/
 
+### Login Page 
+
+Username and Password can be anything. 
+Example: Username: John Password: password
+
+It passes the session parameters which is the username that we got from the login page to the dialogflow CX and prefills it in the welcome agent.
 
